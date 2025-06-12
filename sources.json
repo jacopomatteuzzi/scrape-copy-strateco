@@ -7,23 +7,5 @@
     "linkSelector": "a",
     "textSelector": ".ad__copy",
     "imageSelector": ".ad__image img"
-  },
-  {
-    "name": "Million Dollar Database",
-    "baseUrl": "https://milliondollardatabase.com/search/?q=",
-    "resultSelector": ".search-result",
-    "titleSelector": "h3",
-    "linkSelector": "a",
-    "textSelector": ".content, .copy-text",
-    "imageSelector": "img"
-  },
-  {
-    "name": "Copy Examples Hub",
-    "baseUrl": "https://copyexamples.com/?s=",
-    "resultSelector": "article",
-    "titleSelector": "h2, h3",
-    "linkSelector": "a",
-    "textSelector": ".entry-content, .copy-content",
-    "imageSelector": ".featured-image img"
   }
 ] 

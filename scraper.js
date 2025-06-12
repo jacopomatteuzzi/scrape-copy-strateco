@@ -34,7 +34,58 @@ const getRandomHeaders = () => {
   };
 };
 
+// Database di esempi di fallback
+const getMockExample = (query) => {
+  const mockExamples = [
+    {
+      title: "Il Metodo Segreto per Raddoppiare i Tuoi Clienti",
+      text: "Scopri la strategia che ha permesso a migliaia di professionisti di aumentare del 200% la loro clientela in soli 90 giorni. Non è magia, è marketing scientifico.",
+      category: "business"
+    },
+    {
+      title: "Finalmente! La Soluzione che Stavi Cercando",
+      text: "Dopo anni di ricerca, abbiamo sviluppato il sistema più efficace per [inserire beneficio]. I risultati parlano chiaro: 9 persone su 10 vedono miglioramenti già dal primo utilizzo.",
+      category: "problem-solution"
+    },
+    {
+      title: "Attenzione: Questa Offerta Scade Tra 24 Ore",
+      text: "Non perdere l'opportunità di ottenere [prodotto/servizio] al 50% di sconto. Solo per i primi 100 clienti. Cosa aspetti?",
+      category: "urgency"
+    },
+    {
+      title: "Come Ho Trasformato la Mia Vita in 30 Giorni",
+      text: "La mia storia personale di come sono passato da [situazione negativa] a [situazione positiva] seguendo questo metodo rivoluzionario. E ora lo insegno a te.",
+      category: "transformation"
+    },
+    {
+      title: "Gli Esperti Non Vogliono che Tu Sappia Questo",
+      text: "Il segreto nascosto che l'industria non vuole rivelare. Finalmente puoi avere accesso alle stesse strategie usate dai professionisti più pagati al mondo.",
+      category: "secrets"
+    }
+  ];
+
+  // Seleziona un esempio casuale
+  const example = mockExamples[Math.floor(Math.random() * mockExamples.length)];
+  
+  return {
+    title: example.title,
+    source: "https://scrape-copy-strateco.onrender.com/mock-examples",
+    type: 'mock_example',
+    image_url: null,
+    text: example.text,
+    scraped_from: "Fallback Examples Database",
+    scraped_at: new Date().toISOString(),
+    category: example.category,
+    note: `Esempio generato per la query: "${query}". Aggiungi sorgenti reali tramite l'interfaccia web per ottenere esempi dal vivo.`
+  };
+};
+
 module.exports = async function scrapeExample(query) {
+  if (sources.length === 0) {
+    console.log('⚠️ Nessuna sorgente configurata, uso esempi mock');
+    return getMockExample(query);
+  }
+
   const source = sources[Math.floor(Math.random() * sources.length)]; // Random source
   const searchURL = source.baseUrl + encodeURIComponent(query);
 
@@ -140,11 +191,14 @@ module.exports = async function scrapeExample(query) {
         } catch (fallbackError) {
           // Ripristiniamo le sorgenti originali
           sources.splice(0, sources.length, ...originalSources);
-          throw new Error(`Tutte le sorgenti hanno fallito. Ultimo errore: ${fallbackError.message}`);
+          console.log('⚠️ Tutte le sorgenti hanno fallito, uso esempio mock');
+          return getMockExample(query);
         }
       }
     }
     
-    throw new Error(`Scraping fallito da ${source.name}: ${error.message}`);
+    // Fallback finale: restituisci esempio mock
+    console.log('⚠️ Scraping fallito, uso esempio mock');
+    return getMockExample(query);
   }
 }; 
