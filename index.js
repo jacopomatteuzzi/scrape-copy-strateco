@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const scrapeExample = require('./scraper');
@@ -8,6 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+app.use(cors()); // Abilita CORS per tutte le origini
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
@@ -72,7 +74,8 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'OK', 
     timestamp: new Date().toISOString(),
-    version: require('./package.json').version 
+    version: require('./package.json').version,
+    cors_enabled: true
   });
 });
 
@@ -86,4 +89,5 @@ app.listen(PORT, () => {
   console.log(`🚀 Server scrape-copy-strateco in esecuzione sulla porta ${PORT}`);
   console.log(`📝 Interfaccia web: http://localhost:${PORT}`);
   console.log(`🔗 API endpoint: POST http://localhost:${PORT}/scrape-copy-example`);
+  console.log(`🌐 CORS abilitato per tutte le origini`);
 }); 
