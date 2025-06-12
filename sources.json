@@ -7,5 +7,14 @@
     "linkSelector": "a",
     "textSelector": ".ad__copy",
     "imageSelector": ".ad__image img"
+  },
+  {
+    "name": "Copy Examples (Reddit)",
+    "baseUrl": "https://www.reddit.com/r/copywriting/search?q=",
+    "resultSelector": ".Post",
+    "titleSelector": "h3",
+    "linkSelector": "a",
+    "textSelector": ".md",
+    "imageSelector": "img"
   }
 ] 

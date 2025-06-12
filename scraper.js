@@ -61,6 +61,31 @@ const getMockExample = (query) => {
       title: "Gli Esperti Non Vogliono che Tu Sappia Questo",
       text: "Il segreto nascosto che l'industria non vuole rivelare. Finalmente puoi avere accesso alle stesse strategie usate dai professionisti più pagati al mondo.",
       category: "secrets"
+    },
+    {
+      title: "Smetti di Perdere Tempo con Metodi che Non Funzionano",
+      text: "Basta con tecniche obsolete e inefficaci. Ecco l'approccio moderno e scientificamente provato che ti darà risultati concreti in tempi record.",
+      category: "authority"
+    },
+    {
+      title: "Da Zero a Esperto in 7 Giorni",
+      text: "Il programma intensivo che ha già trasformato la vita di oltre 5.000 persone. Anche tu puoi padroneggiare questa competenza essenziale in una settimana.",
+      category: "education"
+    },
+    {
+      title: "Perché il 95% delle Persone Fallisce (E Come Tu Puoi Essere nel 5%)",
+      text: "La verità scomoda che nessuno ti dice. Scopri i 3 errori fatali che commettono tutti e come evitarli per garantirti il successo.",
+      category: "statistics"
+    },
+    {
+      title: "Testimonianza: 'È Cambiato Tutto in 30 Giorni'",
+      text: "Marco, 45 anni da Milano: 'Non credevo fosse possibile. Dopo aver provato tutto, finalmente ho trovato qualcosa che funziona davvero. I risultati sono incredibili.'",
+      category: "testimonial"
+    },
+    {
+      title: "GRATUITO: La Guida che Vale 497€",
+      text: "Download immediato della guida completa che solitamente vendiamo a 497€. Solo per oggi, completamente gratis. Non perdere questa occasione irripetibile.",
+      category: "free-offer"
     }
   ];
 
