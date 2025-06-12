@@ -1,0 +1,27 @@
+{
+  "name": "scrape-copy-strateco",
+  "version": "1.0.0",
+  "description": "Micro API per copywriting AI che recupera esempi reali di copy da archivi pubblici",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "postinstall": "echo 'Installation completed successfully'"
+  },
+  "keywords": ["copywriting", "ai", "scraping", "marketing", "swipe"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+} 

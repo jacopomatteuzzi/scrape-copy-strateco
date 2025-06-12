@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>scrape-copy-strateco – Gestione Sorgenti</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .content {
+            padding: 2rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 0.5rem;
+        }
+        
+        .source-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease;
+        }
+        
+        .source-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .source-name {
+            font-weight: bold;
+            color: #495057;
+            font-size: 1.1rem;
+        }
+        
+        .source-url {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label { 
+            display: block; 
+            margin-bottom: 0.5rem; 
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        input, textarea { 
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .api-info {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .api-info h3 {
+            color: #1976d2;
+            margin-bottom: 1rem;
+        }
+        
+        .api-endpoint {
+            background: #fff;
+            border-radius: 5px;
+            padding: 0.75rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 scrape-copy-strateco</h1>
+            <p>Gestione sorgenti per esempi di copywriting</p>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2>📝 Siti Swipe configurati</h2>
+                <div id="sources-list">
+                    <div style="text-align: center; padding: 2rem; color: #6c757d;">
+                        Caricamento sorgenti...
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>➕ Aggiungi nuovo sito</h2>
+                <div id="message-container"></div>
+                <form id="addForm">
+                    <div class="form-group">
+                        <label for="name">Nome del sito</label>
+                        <input type="text" id="name" name="name" required placeholder="es. Swiped.co">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="baseUrl">URL di ricerca</label>
+                        <input type="url" id="baseUrl" name="baseUrl" required placeholder="es. https://swiped.co/?s=">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="resultSelector">Selettore CSS risultati</label>
+                        <input type="text" id="resultSelector" name="resultSelector" required placeholder="es. article.post">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="titleSelector">Selettore CSS titolo</label>
+                        <input type="text" id="titleSelector" name="titleSelector" required placeholder="es. h2.entry-title">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="linkSelector">Selettore CSS link</label>
+                        <input type="text" id="linkSelector" name="linkSelector" required placeholder="es. a">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="textSelector">Selettore CSS testo</label>
+                        <input type="text" id="textSelector" name="textSelector" required placeholder="es. .ad__copy">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="imageSelector">Selettore CSS immagine (opzionale)</label>
+                        <input type="text" id="imageSelector" name="imageSelector" placeholder="es. .ad__image img">
+                    </div>
+                    
+                    <button type="submit" class="btn">Aggiungi Sorgente</button>
+                </form>
+            </div>
+            
+            <div class="api-info">
+                <h3>🔗 Informazioni API</h3>
+                <p><strong>Endpoint principale:</strong></p>
+                <div class="api-endpoint">POST /scrape-copy-example</div>
+                <p><strong>Payload esempio:</strong></p>
+                <div class="api-endpoint">{"query": "headline per dentista"}</div>
+                <p><strong>Health check:</strong></p>
+                <div class="api-endpoint">GET /health</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isLoading = false;
+
+        function showMessage(text, type = 'success') {
+            const container = document.getElementById('message-container');
+            container.innerHTML = `<div class="message ${type}">${text}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+
+        async function loadSources() {
+            try {
+                const response = await fetch('/sources');
+                const sources = await response.json();
+                
+                const list = document.getElementById('sources-list');
+                
+                if (sources.length === 0) {
+                    list.innerHTML = `
+                        <div style="text-align: center; padding: 2rem; color: #6c757d;">
+                            Nessuna sorgente configurata. Aggiungi la prima!
+                        </div>
+                    `;
+                    return;
+                }
+                
+                list.innerHTML = sources.map(source => `
+                    <div class="source-item">
+                        <div class="source-name">📝 ${source.name}</div>
+                        <div class="source-url">${source.baseUrl}</div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Errore nel caricare le sorgenti:', error);
+                document.getElementById('sources-list').innerHTML = `
+                    <div class="message error">
+                        Errore nel caricare le sorgenti: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        document.getElementById('addForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (isLoading) return;
+            isLoading = true;
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Rimuovi campi vuoti opzionali
+            if (!data.imageSelector.trim()) {
+                delete data.imageSelector;
+            }
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Aggiunta in corso...';
+            submitBtn.classList.add('loading');
+            
+            try {
+                const response = await fetch('/sources', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showMessage('Sorgente aggiunta con successo! 🎉', 'success');
+                    e.target.reset();
+                    await loadSources();
+                } else {
+                    showMessage(`Errore: ${result.error}`, 'error');
+                }
+                
+            } catch (error) {
+                console.error('Errore:', error);
+                showMessage(`Errore di rete: ${error.message}`, 'error');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.classList.remove('loading');
+                isLoading = false;
+            }
+        });
+
+        // Carica le sorgenti all'avvio
+        loadSources();
+    </script>
+</body>
+</html> 
